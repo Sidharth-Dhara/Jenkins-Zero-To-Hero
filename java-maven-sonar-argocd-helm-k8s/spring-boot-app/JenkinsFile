@@ -49,20 +49,20 @@ pipeline {
     }
     stage('Update Deployment File') {
         steps {
-            // Ensure the repo is checked out first
-        git branch: 'main', 
+        // Ensure the repo is checked out first
+              git branch: 'main', 
             url: 'https://github.com/Sidharth-Dhara/Jenkins-Zero-To-Hero.git', 
             credentialsId: 'github'
 
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-            sh """
+                sh """
                 git config user.email "sidcourseall@gmail.com"
                 git config user.name "Sidharth Dhara"
                 sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
                 git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
                 git commit -m "Update deployment image to version ${BUILD_NUMBER}" || echo "No changes to commit"
                 git push https://${GITHUB_TOKEN}@github.com/Sidharth-Dhara/Jenkins-Zero-To-Hero.git HEAD:main
-            """}
+                  """}
             }
         }
     }
