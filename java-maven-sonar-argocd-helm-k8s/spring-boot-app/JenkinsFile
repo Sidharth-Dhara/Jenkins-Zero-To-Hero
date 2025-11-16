@@ -10,7 +10,7 @@ pipeline {
       steps {
         sh 'echo passed'
         //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
-        sh "curl -v http://16.16.76.229:9000"
+        sh "curl -v http://host.docker.internal:9000"
       }
     }
     stage('Build and Test') {
@@ -22,7 +22,7 @@ pipeline {
     }
     stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://16.16.76.229:9000"
+        SONAR_URL = "http://host.docker.internal:9000"
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
