@@ -37,19 +37,10 @@ pipeline {
         REGISTRY_CREDENTIALS = credentials('docker-cred')
       }
       steps {
-        script {
-             sh '''
-              apt-get update && \
-              apt-get install -y ca-certificates curl gnupg lsb-release && \
-              mkdir -p /etc/apt/keyrings && \
-              curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
-              echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
-              > /etc/apt/sources.list.d/docker.list && \
-              apt-get update && \
-              apt-get install -y docker-ce-cli && \
-              docker --version
-               '''
-            sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
+        script 
+            {
+            dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
+            sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .' }
             def dockerImage = docker.image("${DOCKER_IMAGE}")
             docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
                 dockerImage.push()
