@@ -10,6 +10,15 @@ pipeline {
       steps {
         sh 'echo passed'
         //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
+        sh '''
+          echo "===== NETWORK DEBUG START ====="
+          ip a
+          ip route
+          ping -c 3 8.8.8.8 || true
+          ping -c 3 16.16.76.229 || true
+          curl -I http://16.16.76.229:9000 || true
+          echo "===== NETWORK DEBUG END ====="
+          '''
         sh "curl -v http://16.16.76.229:9000"
       }
     }
