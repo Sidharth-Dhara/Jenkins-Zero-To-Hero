@@ -2,7 +2,8 @@ pipeline {
   agent {
     docker {
       image 'kaur1997/maven-jdk17-docker:v1'
-      args "--user root -v /var/run/docker.sock:/var/run/docker.sock -v ${env.WORKSPACE}:${env.WORKSPACE} -w ${env.WORKSPACE}" // mount Docker socket to access the host's Docker daemon
+      args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+      reuseNode true
     }
   }
   stages {
@@ -56,7 +57,8 @@ pipeline {
         steps {
             checkout scm
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-              dir("${WORKSPACE}") {
+              dir("${WORKSPACE}") { 
+                checkout scm
                 sh '''
                     git config user.email "sidcourseall@gmail.com"
                     git config user.name "Sidharth Dhara"
