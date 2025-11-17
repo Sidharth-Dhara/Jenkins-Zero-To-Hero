@@ -10,7 +10,7 @@ pipeline {
       steps {
         sh 'echo passed'
         //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
-        sh "curl -v http://13.49.49.56:9000"
+        sh "curl -v http://13.60.66.131:9000"
       }
     }
     stage('Build and Test') {
