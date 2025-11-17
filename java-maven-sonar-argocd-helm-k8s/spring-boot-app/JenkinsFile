@@ -9,6 +9,7 @@ pipeline {
     stage('Checkout') {
       steps {
         sh 'echo passed'
+        checkout scm
         //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
         sh "curl -v http://13.60.66.131:9000"
       }
@@ -63,8 +64,9 @@ pipeline {
                     git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                     git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
                 '''
-            }
+            
         }
     }
   }
+}
 }
