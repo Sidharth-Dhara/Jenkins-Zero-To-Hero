@@ -23,7 +23,7 @@ pipeline {
         // Update deployment.yml
         withCredentials([string(credentialsId: env.GIT_CREDENTIALS, variable: 'GITHUB_TOKEN')]) {
           sh """
-            git config user.email "youremail@example.com"
+            git config user.email "sidcourseall@gmail.com"
             git config user.name "${GIT_USER_NAME}"
 
             sed -i "s|image: .*|image: kaur1997/ultimate-cicd:${BUILD_NUMBER}|g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
