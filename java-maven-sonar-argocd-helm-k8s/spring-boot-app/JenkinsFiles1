@@ -6,17 +6,18 @@ pipeline {
       reuseNode true
     }
   }
-  
-  environment {
-    JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"
-    PATH = "${JAVA_HOME}/bin:${env.PATH}"
-  }
-
   stages {
     stage('Verify Java') {
       steps {
-        sh 'java -version'
-        sh 'javac -version'
+        sh '''
+          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+          export PATH=$JAVA_HOME/bin:$PATH
+
+          echo "Using JAVA_HOME: $JAVA_HOME"
+          echo "PATH: $PATH"
+          java -version
+          javac -version
+         '''
       }
     }
 
