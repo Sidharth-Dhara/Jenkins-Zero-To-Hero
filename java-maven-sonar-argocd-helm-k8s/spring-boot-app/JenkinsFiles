@@ -25,7 +25,7 @@ pipeline {
       steps {
         sh 'echo passed'
         checkout scm
-        sh "curl -v http://54.90.139.56:9000"
+        sh "curl -v http://34.229.149.174:9000"
       }
     }
 
