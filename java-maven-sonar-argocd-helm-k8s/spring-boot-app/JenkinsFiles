@@ -83,32 +83,29 @@ pipeline {
             sh '''
                 set -e
 
-                mkdir -p .docker-cli
+                mkdir -p "$WORKSPACE/.docker-cli"
 
-                # Download a newer Docker CLI
-                if [ ! -x .docker-cli/docker ]; then
-                    wget -q \
+                if [ ! -x "$WORKSPACE/.docker-cli/docker" ]; then
+                    curl -fsSL \
                       "https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_CLI_VERSION}.tgz" \
-                      -O /tmp/docker-cli.tgz
+                      -o /tmp/docker-cli.tgz
 
                     tar -xzf /tmp/docker-cli.tgz \
                       --strip-components=1 \
-                      -C .docker-cli \
+                      -C "$WORKSPACE/.docker-cli" \
                       docker/docker
 
-                    chmod +x .docker-cli/docker
+                    chmod +x "$WORKSPACE/.docker-cli/docker"
                 fi
 
                 DOCKER_BIN="$WORKSPACE/.docker-cli/docker"
-
-                # Remove the old forced API version
                 unset DOCKER_API_VERSION
 
-                echo "Checking updated Docker CLI:"
+                echo "Updated Docker CLI:"
                 "$DOCKER_BIN" version
 
                 echo "$DOCKER_PASSWORD" | "$DOCKER_BIN" login \
-                  --username "$DOCKER_USERNAME" \
+                  -u "$DOCKER_USERNAME" \
                   --password-stdin
 
                 "$DOCKER_BIN" build \
@@ -116,7 +113,6 @@ pipeline {
                   java-maven-sonar-argocd-helm-k8s/spring-boot-app
 
                 "$DOCKER_BIN" push "$DOCKER_IMAGE"
-
                 "$DOCKER_BIN" logout
             '''
         }
